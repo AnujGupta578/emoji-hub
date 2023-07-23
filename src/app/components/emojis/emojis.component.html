@@ -1,0 +1,34 @@
+<div>
+  <button mat-raised-button color="primary" (click)="emojiCatOption = searchText = ''">Clear Filter</button>
+</div>
+
+<section class="e-cat-select">
+  <mat-label>Select Emoji Category</mat-label>
+  <mat-select [(ngModel)]="emojiCatOption">
+    <mat-option *ngFor="let eCat of emojiCategory" [value]="eCat">{{eCat}}</mat-option>
+  </mat-select>
+</section>
+
+<section>
+  <input class="search-emoji" id="search-text" [(ngModel)]='searchText' placeholder="Enter text to search emoji" />
+</section>
+
+<section>
+  <mat-grid-list [cols]="gridCols">
+    <mat-grid-tile *ngFor="let emoji of paginationData  | appFilter: searchText | appSelectFilter: emojiCatOption ">
+      <mat-list-item class="emoji-item">
+        <mat-card>
+          <p class="emoji-code" [innerHTML]="emoji?.eHtmlCode | safeSrc"></p>
+          <mat-card-header>
+            <mat-card-title class="emoji-name">{{emoji?.eName}}</mat-card-title>
+          </mat-card-header>
+        </mat-card>
+      </mat-list-item>
+    </mat-grid-tile>
+  </mat-grid-list>
+</section>
+
+
+<div *ngIf="paginationEnable">
+  <app-pagination [data]="emojis" [index]="page" (page)="pageEvent($event)"></app-pagination>
+</div>
